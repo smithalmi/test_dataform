@@ -1,0 +1,42 @@
+config {
+    type: "view",
+}
+with gender_stats as (
+SELECT
+  CURRENT_DATETIME('Asia/Bangkok') AS process_time,
+  "gender" AS field_name,
+  gender AS value,
+  REPLACE("${ref("cds_mdc_2_3", "customer_entity")}", '`', '') AS source_table,
+  COUNT(*) cnt_id,
+  COUNT(DISTINCT entity_id) unq_cnt_id
+FROM
+  ${ref("cds_mdc_2_3", "customer_entity")}
+GROUP BY
+  1,
+  2,
+  3,
+  4
+union all
+SELECT
+  CURRENT_DATETIME('Asia/Bangkok') AS process_time,
+  "gender" AS field_name,
+  gender AS value,
+  REPLACE("${ref("cds_mdc_2_4", "customer_entity")}", '`', '') AS source_table,
+  COUNT(*) cnt_id,
+  COUNT(DISTINCT entity_id) unq_cnt_id
+FROM
+  ${ref("cds_mdc_2_4", "customer_entity")}
+GROUP BY
+  1,
+  2,
+  3,
+  4
+), 
+ gender_overall as (
+    select source_table, sum(cnt_id) total_records 
+    from gender_stats
+    group by 1
+)
+select v.process_time, source_table, field_name, value, total_records, cnt_id, unq_cnt_id
+, cnt_id/total_records as perc_value
+from gender_overall g right outer join gender_stats v using (source_table)

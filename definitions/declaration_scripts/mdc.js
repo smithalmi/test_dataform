@@ -9,3 +9,13 @@ var { _RAW_PROJECT_ID_ } = require("includes/constants");
     name,
   })
 );
+
+[
+  "customer_entity"
+].forEach((name) =>
+  declare({
+    database: _RAW_PROJECT_ID_, 
+    schema: "cds_mdc_2_3",
+    name,
+  })
+);

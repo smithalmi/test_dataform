@@ -1,0 +1,13 @@
+config {
+    type: "assertion",
+}
+
+select source_table, sum(case when 
+    (
+        (source_table like '%2_4%' and value in ( 0, 1, 4, 7) )
+        OR
+        (source_table like '%2_3%' and value in (1, 2, 3) )
+        or 
+        value is null
+    )
+    then perc_value end) as valid_perc from ${ref("vw_customer_gender")} group by 1
