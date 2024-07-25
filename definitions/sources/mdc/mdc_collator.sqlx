@@ -13,4 +13,4 @@ select source_table, sum(case when
     )
     then perc_value end) as valid_perc from ${ref("vw_customer_gender")} group by 1
 )
-select * from check_gender where valid_perc < 0.90
+select * from check_gender where valid_perc < ${constants._GENDER_THRESHOLD_}
