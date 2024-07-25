@@ -1,0 +1,5 @@
+defaultProject: cto-cds-presentation-hub-prd
+defaultLocation: asia-southeast1
+defaultDataset: Z_DQ_CORE
+defaultAssertionDataset: Z_DQ_CORE
+dataformCoreVersion: 3.0.0-beta.4
